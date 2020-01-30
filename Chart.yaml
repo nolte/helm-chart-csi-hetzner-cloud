@@ -30,3 +30,7 @@ home: https://github.com/hetznercloud/csi-driver
 sources:
   - https://github.com/nolte/helm-chart-csi-hetzner-cloud
   - https://github.com/hetznercloud/csi-driver
+
+maintainers:
+- name: nolte
+  email: nolte07@googlemail.com
