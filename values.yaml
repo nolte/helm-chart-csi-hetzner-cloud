@@ -1,1 +1,4 @@
 token:
+storageClass:
+  name: hcloud-volumes
+  default: false # make the storage class to default DefaultStorageClass
