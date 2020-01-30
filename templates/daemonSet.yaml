@@ -6,7 +6,7 @@ metadata:
   namespace: kube-system
   labels:
     app: hcloud-csi
-    {{- include "csi-hcloud.labels" . | nindent 4 }}    
+    {{- include "csi-hcloud.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:

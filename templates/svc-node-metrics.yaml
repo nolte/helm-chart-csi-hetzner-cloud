@@ -5,7 +5,7 @@ metadata:
   name: hcloud-csi-node-metrics
   namespace: kube-system
   labels:
-    {{- include "csi-hcloud.labels" . | nindent 4 }}  
+    {{- include "csi-hcloud.labels" . | nindent 4 }}
 spec:
   selector:
     app: hcloud-csi
