@@ -1,0 +1,63 @@
+name: Helm Chart CI
+on:
+  push:
+    branches:
+      - master
+      - feature/**
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - master
+jobs:
+  helmbuild:
+    name: Package Chart
+    runs-on: ubuntu-latest
+    env:
+      GOARCH: amd64
+      GOOS: linux
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: Run tests
+        uses: nolte/github-action/helm/testing@master
+        with:
+          path: "/github"
+      - name: Run package
+        uses: nolte/github-action/helm/build@master
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          path: "dist"
+          name: "dist"
+  helmdeploy:
+    name: Publish Chart
+    runs-on: ubuntu-latest
+    needs: helmbuild
+    steps:
+      - name: Check out Chart Repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CR_TOKEN }}
+          fetch-depth: 1
+          repository: "nolte/helm-charts"
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: "dist"
+          path: '.chartdata'
+
+      - name: copy chart archive
+        run: |
+          mv .chartdata/**.tgz chart-repo/charts/
+
+      - name: Commit files
+        run: |
+          rm -rf .chartdata
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Add changes" -a
+          git push origin master

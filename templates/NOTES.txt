@@ -1,0 +1,1 @@
+user Storage class xxxx {{ .Release.Namespace }}
